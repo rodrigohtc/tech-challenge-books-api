@@ -14,6 +14,36 @@ FastAPI (endpoints REST) + Swagger
 Consumidores (cientistas de dados / serviços)
 ```
 
+```mermaid
+flowchart LR
+    subgraph DataPipeline[Data Pipeline]
+        A[books.toscrape.com] --> B[Scraper requests + BeautifulSoup]
+        B --> C[Raw HTML]
+        C --> D[Transform  <br/> pandas]
+        D --> E[data/books.csv]
+    end
+
+    subgraph Application[Core Application]
+        E --> F[Books API]
+        F --> G[Swagger UI  <br/> /docs]
+        F --> H[(JWT Auth <br/> POST /api/v1/auth/token)]
+        F --> I[Core Endpoints <br/> GET /api/v1/books  <br/> GET /api/v1/categories  <br/> ...]
+        F --> J[Insights & ML APIs  <br/> GET /api/v1/stats <br/> GET /api/v1/ml<br/>...]
+        F --> K[Prometheus Metrics  <br/> GET /metrics]
+        F --> L[Structured Logs]
+    end
+
+    subgraph Observability
+        K --> M[(Prometheus/Grafana)]
+        L --> N[(Log Collector / ELK)]
+    end
+
+    subgraph External
+        F --> P[ML Pipelines]
+        F --> Q[Streamlit Dashboard]
+    end
+```
+
 ## 📦 Estrutura
 
 ```
@@ -68,7 +98,7 @@ Acesse Swagger: http://127.0.0.1:8000/docs
 - No Render/Heroku: crie um serviço web apontando para este repo.
 - `Procfile` já define: `web: uvicorn api.main:app --host 0.0.0.0 --port $PORT`.
 - Deploy Render ativo:
-  - API: https://tech-challenge-books-api-cdgc.onrender.com
+  - API: https://tech-challenge-books-api-rhtc-dashboard.onrender.com
   - Dashboard Streamlit: https://tech-challenge-books-api-rhtc-dashboard.onrender.com
 
 ## 📚 Endpoints
