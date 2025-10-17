@@ -9,6 +9,7 @@ from api.middleware.logging import RequestLoggingMiddleware
 from api.routes.auth import router as auth_router
 from api.routes.books import router as books_router
 from api.routes.categories import router as categories_router
+from api.routes.ml import router as ml_router
 from api.routes.stats import router as stats_router
 
 app = FastAPI(title="Books API", version="1.0.0")
@@ -43,3 +44,4 @@ app.include_router(auth_router, prefix="/api/v1")
 app.include_router(books_router, prefix="/api/v1", dependencies=[Depends(verify_token)])
 app.include_router(categories_router, prefix="/api/v1", dependencies=[Depends(verify_token)])
 app.include_router(stats_router, prefix="/api/v1", dependencies=[Depends(verify_token)])
+app.include_router(ml_router, prefix="/api/v1", dependencies=[Depends(verify_token)])

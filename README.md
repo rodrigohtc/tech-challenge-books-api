@@ -67,6 +67,9 @@ Acesse Swagger: http://127.0.0.1:8000/docs
 - Faça push para o GitHub.
 - No Render/Heroku: crie um serviço web apontando para este repo.
 - `Procfile` já define: `web: uvicorn api.main:app --host 0.0.0.0 --port $PORT`.
+- Deploy Render ativo:
+  - API: https://tech-challenge-books-api-cdgc.onrender.com
+  - Dashboard Streamlit: https://tech-challenge-books-api-rhtc-dashboard.onrender.com
 
 ## 📚 Endpoints
 
@@ -80,6 +83,22 @@ Acesse Swagger: http://127.0.0.1:8000/docs
 - `GET /api/v1/stats/categories`
 - `GET /api/v1/books/top-rated`
 - `GET /api/v1/books/price-range?min=&max=`
+- `GET /api/v1/ml/features`
+- `GET /api/v1/ml/training-data`
+- `POST /api/v1/ml/predictions`
+
+### Endpoints de Insights
+
+- `GET /api/v1/stats/overview`: estatísticas gerais da coleção (total de livros, preço médio, distribuição de ratings).
+- `GET /api/v1/stats/categories`: estatísticas detalhadas por categoria (quantidade de livros, preços por categoria).
+- `GET /api/v1/books/top-rated`: lista os livros com melhor avaliação (rating mais alto).
+- `GET /api/v1/books/price-range?min={min}&max={max}`: filtra livros dentro de uma faixa de preço específica.
+
+### Endpoints de ML
+
+- `GET /api/v1/ml/features`: entrega features limpas (price, rating, categoria, flag de estoque) prontas para consumo por modelos.
+- `GET /api/v1/ml/training-data`: fornece dataset completo com metadados, lista de colunas de features e target sugerido.
+- `POST /api/v1/ml/predictions`: endpoint para recebimento de predições; retorna um resumo (quantidade, modelos, score médio).
 
 ## 🔐 Autenticação
 

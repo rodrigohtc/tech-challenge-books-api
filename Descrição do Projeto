@@ -1,0 +1,23 @@
+# 🧠 Descrição Completa do Projeto
+
+O **Tech Challenge — Books API** é um projeto desenvolvido como parte da **Fase 1 do curso de Machine Learning Engineering (FIAP)**.  
+O objetivo é construir uma **API pública** que disponibiliza informações sobre livros obtidos via **web scraping**, oferecendo um pipeline completo — desde a coleta e transformação dos dados até a exposição de endpoints REST documentados e prontos para uso em aplicações de análise e aprendizado de máquina.
+
+---
+
+## 🎯 Objetivos do Projeto
+
+- Realizar **web scraping** no site [books.toscrape.com](https://books.toscrape.com) para extrair informações sobre livros (título, preço, categoria, avaliação, disponibilidade e imagem).  
+- Armazenar os dados em formato estruturado (`data/books.csv`).  
+- Disponibilizar os dados por meio de uma **API RESTful** construída com **FastAPI**, documentada via Swagger.  
+- Implementar **autenticação JWT**, **monitoramento via Prometheus** e **dashboard interativo em Streamlit**.  
+- Realizar o **deploy público** da aplicação (Render, Heroku, etc.), tornando a API acessível externamente.
+
+---
+
+## ⚙️ Como Reproduzir Localmente
+
+### 1️⃣ Criar e ativar o ambiente virtual
+```bash
+python -m venv .venv
+source .venv/bin/activate   # Windows: .venv\Scripts\activate
