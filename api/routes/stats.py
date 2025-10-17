@@ -5,7 +5,14 @@ router = APIRouter(tags=["stats"])
 
 def _load_df() -> pd.DataFrame:
     df = pd.read_csv("data/books.csv")
-    df["price"] = pd.to_numeric(df["price"], errors="coerce")
+    if "price" in df.columns:
+        cleaned_price = (
+            df["price"]
+            .astype(str)
+            .str.replace(r"[^\d.,-]", "", regex=True)
+            .str.replace(",", ".", regex=False)
+        )
+        df["price"] = pd.to_numeric(cleaned_price, errors="coerce")
     if "rating" in df.columns:
         map_rating = {
             "One": 1, "Two": 2, "Three": 3, "Four": 4, "Five": 5,
@@ -21,7 +28,8 @@ def _load_df() -> pd.DataFrame:
 def stats_overview():
     df = _load_df()
     total = len(df)
-    avg_price = float(df["price"].mean()) if total else 0.0
+    avg_price_series = df["price"].dropna() if "price" in df.columns else pd.Series(dtype=float)
+    avg_price = float(avg_price_series.mean()) if not avg_price_series.empty else 0.0
     rating_dist = df["rating"].value_counts().sort_index().to_dict() if "rating" in df.columns else {}
     return {
         "total_books": total,
@@ -41,4 +49,5 @@ def stats_by_category():
         min_price=("price", "min"),
     ).reset_index()
     grouped["avg_price"] = grouped["avg_price"].round(2)
+    grouped = grouped.where(pd.notnull(grouped), None)
     return grouped.to_dict(orient="records")

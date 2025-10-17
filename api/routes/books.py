@@ -44,14 +44,6 @@ def list_books(skip: int = 0, limit: int = Query(100, le=500)):
     data = df.iloc[skip: skip + limit].to_dict(orient="records")
     return data
 
-@router.get("/books/{book_id}")
-def get_book(book_id: int):
-    df = _load_df()
-    row = df[df["id"] == book_id]
-    if row.empty:
-        raise HTTPException(status_code=404, detail="Book not found")
-    return row.iloc[0].to_dict()
-
 @router.get("/books/search")
 def search_books(
     title: Optional[str] = None,
@@ -84,3 +76,11 @@ def price_range(min: float, max: float):
     df = _load_df()
     df = df[(df["price"] >= min) & (df["price"] <= max)]
     return df.to_dict(orient="records")
+
+@router.get("/books/{book_id}")
+def get_book(book_id: int):
+    df = _load_df()
+    row = df[df["id"] == book_id]
+    if row.empty:
+        raise HTTPException(status_code=404, detail="Book not found")
+    return row.iloc[0].to_dict()
