@@ -90,12 +90,12 @@ python scripts/scraper.py
 uvicorn api.main:app --reload
 ```
 
-Acesse Swagger: http://127.0.0.1:8000/docs
+Acesse Swagger local: http://127.0.0.1:8000/docs
 
-## 🌐 Deploy (Render/Heroku/Fly.io)
+## 🌐 Deploy (Render)
 
 - Faça push para o GitHub.
-- No Render/Heroku: crie um serviço web apontando para este repo.
+- No Render: crie um serviço web apontando para este repo.
 - `Procfile` já define: `web: uvicorn api.main:app --host 0.0.0.0 --port $PORT`.
 - Deploy Render ativo:
   - API: https://tech-challenge-books-api-rhtc-dashboard.onrender.com
@@ -161,9 +161,3 @@ pytest -q
   streamlit run dashboard/app.py
   ```
   Autentique-se com usuário/senha da API, visualize overview, ranking de livros, estatísticas por categoria e um snapshot do endpoint `/metrics`.
-
-## 🔮 Próximos Passos (ML-Ready)
-
-- Trocar CSV por Postgres ou MongoDB.
-- Adicionar endpoints `/api/v1/ml/*`.
-- Monitoramento (logs estruturados, métricas) e dashboard (Streamlit).

@@ -1,3 +1,5 @@
+import os
+
 import pytest
 from fastapi.testclient import TestClient
 from api.main import app
@@ -7,9 +9,11 @@ client = TestClient(app)
 
 @pytest.fixture(scope="module")
 def access_token():
+    username = os.getenv("AUTH_USERNAME", "admin")
+    password = os.getenv("AUTH_PASSWORD", "secret")
     response = client.post(
         "/api/v1/auth/token",
-        data={"username": "admin", "password": "secret"},
+        data={"username": username, "password": password},
         headers={"Content-Type": "application/x-www-form-urlencoded"},
     )
     assert response.status_code == 200

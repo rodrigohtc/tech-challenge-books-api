@@ -1,4 +1,5 @@
 import logging
+from contextlib import asynccontextmanager
 
 from fastapi import Depends, FastAPI
 from fastapi.middleware.cors import CORSMiddleware
@@ -12,9 +13,21 @@ from api.routes.categories import router as categories_router
 from api.routes.ml import router as ml_router
 from api.routes.stats import router as stats_router
 
-app = FastAPI(title="Books API", version="1.0.0")
-
 logging.basicConfig(level=logging.INFO, format="%(message)s")
+
+instrumentator = Instrumentator(
+    should_group_status_codes=True,
+    excluded_handlers=["/metrics", "/docs", "/openapi.json"],
+)
+
+
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    instrumentator.expose(app, include_in_schema=False)
+    yield
+
+
+app = FastAPI(title="Books API", version="1.0.0", lifespan=lifespan)
 
 app.add_middleware(
     CORSMiddleware,
@@ -25,16 +38,7 @@ app.add_middleware(
 )
 app.add_middleware(RequestLoggingMiddleware)
 
-instrumentator = Instrumentator(
-    should_group_status_codes=True,
-    excluded_handlers=["/metrics", "/docs", "/openapi.json"],
-)
 instrumentator.instrument(app)
-
-
-@app.on_event("startup")
-async def _startup() -> None:
-    instrumentator.expose(app, include_in_schema=False)
 
 @app.get("/api/v1/health")
 def health():

@@ -45,5 +45,5 @@ def ml_predictions(payload: PredictionPayload) -> Dict[str, Any]:
             status_code=status.HTTP_400_BAD_REQUEST,
             detail="Predictions payload is empty.",
         )
-    summary = summarize_predictions([prediction.dict() for prediction in payload.predictions])
+    summary = summarize_predictions([prediction.model_dump() for prediction in payload.predictions])
     return {"status": "accepted", "summary": summary}
